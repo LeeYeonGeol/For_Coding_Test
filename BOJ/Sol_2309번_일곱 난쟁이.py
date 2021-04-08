@@ -6,17 +6,11 @@ for _ in range(9):
 
 arr.sort()
 
-def dfs(x, a):
-    if x == 2:
-        if sum(arr) - sum(a) == 100:
-            for i in arr:
-                if not i in a:
-                    print(i)
-            sys.exit()
-        return
-    else:
-        for i in range(9):
-            if not arr[i] in a:
-                dfs(x+1, a+[arr[i]])
+for i in range(9):
+    for j in range(i+1,9):
+        if arr[i]+arr[j] == sum(arr)-100:
+            for k in range(9):
+                if k != i and k != j:
+                    print(arr[k])
 
-dfs(0, [])
+            sys.exit()
