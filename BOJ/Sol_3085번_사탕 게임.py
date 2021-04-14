@@ -1,55 +1,42 @@
 n = int(input())
 
-graph = []
+a = []
 
 for _ in range(n):
-    graph.append(list(input()))
+    a.append(list(input()))
 
 ans = 1
-dx = [0, 0, 1, -1]
-dy = [1, -1, 0, 0]
+def check(start_row, end_row, start_col, end_col):
+    global ans
+    sub = 1
+    for i in range(start_row, end_row+1):
+        cnt = 1
+        for j in range(n-1):
+            if a[i][j] == a[i][j+1]:
+                cnt += 1
+            else:
+                cnt = 1
+            sub = max(sub, cnt)
 
-def cal_max(x, y):
-    ans = 1
-    arr = graph[x]
-    cnt1 = 1
-    for i in range(n-1):
-        if arr[i] == arr[i+1]:
-            cnt1 += 1
-        else:
-            cnt1 = 1
-        ans = max(ans, cnt1)
+    for i in range(start_col, end_col+1):
+        cnt = 1
+        for j in range(n-1):
+            if a[j][i] == a[j+1][i]:
+                cnt += 1
+            else:
+                cnt = 1
+            sub = max(sub, cnt)
+    ans = max(ans, sub)
 
-    arr = []
-    for i in range(n):
-        arr.append(graph[i][y])
-
-    cnt2 = 1
-    for i in range(n-1):
-        if arr[i] == arr[i+1]:
-            cnt2 += 1
-        else:
-            cnt2 = 1
-        ans = max(ans, cnt2)
-
-    return ans
 for x in range(n):
     for y in range(n):
-        # 위아래로 비교
-        nx, ny = x+1, y
-        if 0 <= nx < n and 0 <= ny < n:
-            graph[x][y], graph[nx][ny] = graph[nx][ny], graph[x][y]
-            ans = max(ans, cal_max(x, y))
-            ans = max(ans, cal_max(nx, ny))
-            graph[x][y], graph[nx][ny] = graph[nx][ny], graph[x][y]
-        # 옆으로 비교
-        nx, ny = x, y+1
-        if 0 <= nx < n and 0 <= ny < n:
-
-            graph[x][y], graph[nx][ny] = graph[nx][ny], graph[x][y]
-
-            ans = max(ans, cal_max(x, y))
-            ans = max(ans, cal_max(nx, ny))
-            graph[x][y], graph[nx][ny] = graph[nx][ny], graph[x][y]
+        if x+1 < n:
+            a[x][y], a[x+1][y] = a[x+1][y], a[x][y]
+            check(x,x+1,y,y)
+            a[x][y], a[x+1][y] = a[x+1][y], a[x][y]
+        if y+1 < n:
+            a[x][y], a[x][y+1] = a[x][y+1], a[x][y]
+            check(x,x,y,y+1)
+            a[x][y], a[x][y+1] = a[x][y+1], a[x][y]
 
 print(ans)
