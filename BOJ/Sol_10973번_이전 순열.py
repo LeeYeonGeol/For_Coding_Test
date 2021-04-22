@@ -20,4 +20,3 @@ for i in range(n-2,-1,-1):
         break
 else:
     print(-1)
-
