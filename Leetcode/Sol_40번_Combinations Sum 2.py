@@ -6,13 +6,14 @@ class Solution:
         ans = []
         sub = []
         def dfs(index, csum):
-            if csum > target:
-                return
-            elif csum == target:
+            if csum == target:
                 if not sorted(sub) in ans:
                     ans.append(sorted(sub))
+                return
 
             for i in range(index, len(candidates)):
+                if csum + candidates[i] > target:
+                    continue
                 sub.append(candidates[i])
                 dfs(i+1, csum+candidates[i])
                 sub.pop()
